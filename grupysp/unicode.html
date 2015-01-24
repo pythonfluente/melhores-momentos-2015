@@ -1,0 +1,385 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Texto versus bytes &mdash; Fluent Python: melhores momentos vol.1 2015.01 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2015.01',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <link rel="top" title="Fluent Python: melhores momentos vol.1 2015.01 documentation" href="index.html" />
+    <link rel="next" title="Customização de format" href="format.html" />
+    <link rel="prev" title="Python Fluente: melhores momentos (vol.1)" href="README.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="format.html" title="Customização de format"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="README.html" title="Python Fluente: melhores momentos (vol.1)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Fluent Python: melhores momentos vol.1 2015.01 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="texto-versus-bytes">
+<h1>Texto versus bytes<a class="headerlink" href="#texto-versus-bytes" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><p>Humanos usam texto. Computadores falam bytes.</p>
+<p><em>Esther Nam e Travis Fisher</em> — <a class="reference external" href="http://www.slideshare.net/fischertrav/character-encoding-unicode-how-to-with-dignity-33352863">Character encoding and Unicode in Python</a></p>
+</div></blockquote>
+<div class="section" id="encoding-versus-decoding">
+<h2>Encoding versus decoding<a class="headerlink" href="#encoding-versus-decoding" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="s">&#39;café&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span>
+<span class="go">b&#39;caf\xc3\xa9&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/encoding-demo.png" src="_images/encoding-demo.png" />
+</div>
+<div class="section" id="tipos-binarios">
+<h2>Tipos binários<a class="headerlink" href="#tipos-binarios" title="Permalink to this headline">¶</a></h2>
+<p>Tipos <tt class="docutils literal"><span class="pre">bytes</span></tt> e <tt class="docutils literal"><span class="pre">bytearray</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cafe</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="s">&#39;café&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf_8&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cafe</span>
+<span class="go">b&#39;caf\xc3\xa9&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cafe</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">99</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cafe</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">b&#39;c&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cafe_arr</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">cafe</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cafe_arr</span>
+<span class="go">bytearray(b&#39;caf\xc3\xa9&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cafe_arr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span>
+<span class="go">bytearray(b&#39;\xa9&#39;)</span>
+</pre></div>
+</div>
+<p>Construtor alternativo</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s">&#39;31 4B CE A9&#39;</span><span class="p">)</span>
+<span class="go">b&#39;1K\xce\xa9&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="codecs">
+<h2>Codecs<a class="headerlink" href="#codecs" title="Permalink to this headline">¶</a></h2>
+<p>Codecs: encoders, decoders</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">codec</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;latin_1&#39;</span><span class="p">,</span> <span class="s">&#39;utf_8&#39;</span><span class="p">,</span> <span class="s">&#39;utf_16&#39;</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">codec</span><span class="p">,</span> <span class="s">&#39;El Niño&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">codec</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">latin_1 b&#39;El Ni\xf1o&#39;</span>
+<span class="go">utf_8   b&#39;El Ni\xc3\xb1o&#39;</span>
+<span class="go">utf_16  b&#39;\xff\xfeE\x00l\x00 \x00N\x00i\x00\xf1\x00o\x00&#39;</span>
+</pre></div>
+</div>
+<p>Codecs notáveis:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">latin1</span></tt></dt>
+<dd>Também conhecido como <tt class="docutils literal"><span class="pre">iso8859_1</span></tt>: idiomas da Europa ocidental.</dd>
+<dt><tt class="docutils literal"><span class="pre">cp1252</span></tt></dt>
+<dd>Extensão do <tt class="docutils literal"><span class="pre">latin1</span></tt> criada pela Microsoft. Erroneamente chamado de &#8220;ANSI&#8221;.</dd>
+<dt><tt class="docutils literal"><span class="pre">cp437</span></tt></dt>
+<dd>Página de código original do IBM PC-DOS com caracteres para desenhar bordas, porém faltando letras maiúsculas acentuadas.</dd>
+<dt><tt class="docutils literal"><span class="pre">cp850</span></tt></dt>
+<dd>Página de código derivada da <tt class="docutils literal"><span class="pre">cp437</span></tt> completando as letras maiúsculas acentuadas (no lugar de alguns caracteres de bordas)</dd>
+<dt><tt class="docutils literal"><span class="pre">gb2312</span></tt></dt>
+<dd>Codificação multi-byte Chinesa: obsoleta mas ainda largamente utilizada.</dd>
+<dt><tt class="docutils literal"><span class="pre">utf-8</span></tt></dt>
+<dd>Codificação de 8 bits usando 1 a 4 bytes por caractere, recomendada pelo W3C e usada em cerca de 80% dos sites da Web hoje. Parte da norma Unicode.</dd>
+<dt><tt class="docutils literal"><span class="pre">utf-16le</span></tt></dt>
+<dd>Codificação de 16 bits usando 2 a 4 bytes por caractere. Parte da norma Unicode.</dd>
+<dt><tt class="docutils literal"><span class="pre">ucs-2</span></tt></dt>
+<dd>Codificação de 16 bits usando 2 bytes por caractere. Obsoleta desde 1996.</dd>
+</dl>
+</div>
+<div class="section" id="diagnosticar-e-resolver-erros">
+<h2>Diagnosticar e resolver erros<a class="headerlink" href="#diagnosticar-e-resolver-erros" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">UnicodeEncodeError</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">city</span> <span class="o">=</span> <span class="s">&#39;São Paulo&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">city</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf_8&#39;</span><span class="p">)</span>
+<span class="go">b&#39;S\xc3\xa3o Paulo&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">city</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf_16&#39;</span><span class="p">)</span>
+<span class="go">b&#39;\xff\xfeS\x00\xe3\x00o\x00 \x00P\x00a\x00u\x00l\x00o\x00&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">city</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;iso8859_1&#39;</span><span class="p">)</span>
+<span class="go">b&#39;S\xe3o Paulo&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">city</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;cp437&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+  File <span class="nb">&quot;/.../lib/python3.4/encodings/cp437.py&quot;</span>, line <span class="m">12</span>, in <span class="n">encode</span>
+    <span class="k">return</span> <span class="n">codecs</span><span class="o">.</span><span class="n">charmap_encode</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span><span class="n">errors</span><span class="p">,</span><span class="n">encoding_map</span><span class="p">)</span>
+<span class="gr">UnicodeEncodeError</span>: <span class="n">&#39;charmap&#39; codec can&#39;t encode character &#39;\xe3&#39; in</span>
+<span class="go">position 1: character maps to &lt;undefined&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">city</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;cp437&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="go">b&#39;So Paulo&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">city</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;cp437&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s">&#39;replace&#39;</span><span class="p">)</span>
+<span class="go">b&#39;S?o Paulo&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">city</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;cp437&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s">&#39;xmlcharrefreplace&#39;</span><span class="p">)</span>
+<span class="go">b&#39;S&amp;#227;o Paulo&#39;</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">UnicodeDecodeError</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">octets</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;Montr</span><span class="se">\xe9</span><span class="s">al&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">octets</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;cp1252&#39;</span><span class="p">)</span>
+<span class="go">&#39;Montréal&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">octets</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;iso8859_7&#39;</span><span class="p">)</span>
+<span class="go">&#39;Montrιal&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">octets</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;koi8_r&#39;</span><span class="p">)</span>
+<span class="go">&#39;MontrИal&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">octets</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf_8&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">UnicodeDecodeError</span>: <span class="n">&#39;utf-8&#39; codec can&#39;t decode byte 0xe9 in position 5:</span>
+<span class="go">invalid continuation byte</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">octets</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf_8&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s">&#39;replace&#39;</span><span class="p">)</span>
+<span class="go">&#39;Montr�al&#39;</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">SyntaxError</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre>SyntaxError: Non-UTF-8 code starting with &#39;\xe1&#39; in file ola.py on line
+1, but no encoding declared; see http://python.org/dev/peps/pep-0263/
+for details
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># coding: cp1252</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">&#39;Olá, Mundo!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="detectando-encodings-chardet">
+<h2>Detectando encodings: Chardet<a class="headerlink" href="#detectando-encodings-chardet" title="Permalink to this headline">¶</a></h2>
+<p>Pacote <a class="reference external" href="https://pypi.python.org/pypi/chardet">chardet</a> (Universal Character Encoding Detector).</p>
+<p>Pode ser usado como biblioteca ou utilitário de linha de comando.</p>
+<div class="highlight-python"><div class="highlight"><pre>$ chardetect Strings-bytes.asciidoc
+Strings-bytes.asciidoc: utf-8 with confidence 0.99
+</pre></div>
+</div>
+</div>
+<div class="section" id="arquivos-de-texto">
+<h2>Arquivos de texto<a class="headerlink" href="#arquivos-de-texto" title="Permalink to this headline">¶</a></h2>
+<p>Use o sanduíche: recheio 100% Unicode puro!</p>
+<img alt="_images/unicode-sandwich.png" src="_images/unicode-sandwich.png" />
+<p>Não confie nos encodigns default.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;cafe.txt&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf_8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;café&#39;</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;cafe.txt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="go">&#39;cafÃ©&#39;</span>
+</pre></div>
+</div>
+<p>Para entender o que se passa</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;cafe.txt&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf_8&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fp</span>
+<span class="go">&lt;_io.TextIOWrapper name=&#39;cafe.txt&#39; mode=&#39;w&#39; encoding=&#39;utf_8&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;café&#39;</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fp</span><span class="o">.</span><span class="n">close</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="s">&#39;cafe.txt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">st_size</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fp2</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;cafe.txt&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fp2</span>
+<span class="go">&lt;_io.TextIOWrapper name=&#39;cafe.txt&#39; mode=&#39;r&#39; encoding=&#39;cp1252&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fp2</span><span class="o">.</span><span class="n">encoding</span>
+<span class="go">&#39;cp1252&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fp2</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="go">&#39;cafÃ©&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fp3</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;cafe.txt&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf_8&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fp3</span>
+<span class="go">&lt;_io.TextIOWrapper name=&#39;cafe.txt&#39; mode=&#39;r&#39; encoding=&#39;utf_8&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fp3</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="go">&#39;café&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fp4</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;cafe.txt&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fp4</span>
+<span class="go">&lt;_io.BufferedReader name=&#39;cafe.txt&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fp4</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="go">b&#39;caf\xc3\xa9&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="a-zona-dos-encodings-default">
+<h2>A <em>zona</em> dos encodings default<a class="headerlink" href="#a-zona-dos-encodings-default" title="Permalink to this headline">¶</a></h2>
+<p>Script para investigação: <a class="reference external" href="default_encodings.py">default_encodings.py</a></p>
+<p>GNU/Linux Ubuntu 14.04, Mac OSX 10.9</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python3 default_encodings.py
+ locale.getpreferredencoding() -&gt; &#39;UTF-8&#39;
+                 type(my_file) -&gt; &lt;class &#39;_io.TextIOWrapper&#39;&gt;
+              my_file.encoding -&gt; &#39;UTF-8&#39;
+           sys.stdout.isatty() -&gt; True
+           sys.stdout.encoding -&gt; &#39;UTF-8&#39;
+            sys.stdin.isatty() -&gt; True
+            sys.stdin.encoding -&gt; &#39;UTF-8&#39;
+           sys.stderr.isatty() -&gt; True
+           sys.stderr.encoding -&gt; &#39;UTF-8&#39;
+      sys.getdefaultencoding() -&gt; &#39;utf-8&#39;
+   sys.getfilesystemencoding() -&gt; &#39;utf-8&#39;
+</pre></div>
+</div>
+<p>Windows 7, SP1</p>
+<div class="highlight-python"><div class="highlight"><pre>Z:\&gt;chcp
+Página de código ativa: 850
+Z:\&gt;python default_encodings.py
+ locale.getpreferredencoding() -&gt; &#39;cp1252&#39;
+                 type(my_file) -&gt; &lt;class &#39;_io.TextIOWrapper&#39;&gt;
+              my_file.encoding -&gt; &#39;cp1252&#39;
+           sys.stdout.isatty() -&gt; True
+           sys.stdout.encoding -&gt; &#39;cp850&#39;
+            sys.stdin.isatty() -&gt; True
+            sys.stdin.encoding -&gt; &#39;cp850&#39;
+           sys.stderr.isatty() -&gt; True
+           sys.stderr.encoding -&gt; &#39;cp850&#39;
+      sys.getdefaultencoding() -&gt; &#39;utf-8&#39;
+   sys.getfilesystemencoding() -&gt; &#39;mbcs&#39;
+</pre></div>
+</div>
+</div>
+<div class="section" id="ordem-alfabetica">
+<h2>Ordem alfabética<a class="headerlink" href="#ordem-alfabetica" title="Permalink to this headline">¶</a></h2>
+<p>Ordenação default: por codepoint.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;caju&#39;</span><span class="p">,</span> <span class="s">&#39;atemoia&#39;</span><span class="p">,</span> <span class="s">&#39;cajá&#39;</span><span class="p">,</span> <span class="s">&#39;açaí&#39;</span><span class="p">,</span> <span class="s">&#39;acerola&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span>
+<span class="go">[&#39;acerola&#39;, &#39;atemoia&#39;, &#39;açaí&#39;, &#39;caju&#39;, &#39;cajá&#39;]</span>
+</pre></div>
+</div>
+<p>Ordenação com <tt class="docutils literal"><span class="pre">locale.strxfrm</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">locale</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_COLLATE</span><span class="p">,</span> <span class="s">&#39;pt_BR.UTF-8&#39;</span><span class="p">)</span>
+<span class="go">&#39;pt_BR.UTF-8&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;caju&#39;</span><span class="p">,</span> <span class="s">&#39;atemoia&#39;</span><span class="p">,</span> <span class="s">&#39;cajá&#39;</span><span class="p">,</span> <span class="s">&#39;açaí&#39;</span><span class="p">,</span> <span class="s">&#39;acerola&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sorted_fruits</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">locale</span><span class="o">.</span><span class="n">strxfrm</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sorted_fruits</span>
+<span class="go">[&#39;açaí&#39;, &#39;acerola&#39;, &#39;atemoia&#39;, &#39;cajá&#39;, &#39;caju&#39;]</span>
+</pre></div>
+</div>
+<p>Ordenação com pacote <a class="reference external" href="https://pypi.python.org/pypi/pyuca/">pyuca</a>: Unicode Collation Algorithm</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyuca</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coll</span> <span class="o">=</span> <span class="n">pyuca</span><span class="o">.</span><span class="n">Collator</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;caju&#39;</span><span class="p">,</span> <span class="s">&#39;atemoia&#39;</span><span class="p">,</span> <span class="s">&#39;cajá&#39;</span><span class="p">,</span> <span class="s">&#39;açaí&#39;</span><span class="p">,</span> <span class="s">&#39;acerola&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sorted_fruits</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">coll</span><span class="o">.</span><span class="n">sort_key</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sorted_fruits</span>
+<span class="go">[&#39;açaí&#39;, &#39;acerola&#39;, &#39;atemoia&#39;, &#39;cajá&#39;, &#39;caju&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="outros-topicos-abordados-no-livro">
+<h2>Outros tópicos abordados no livro<a class="headerlink" href="#outros-topicos-abordados-no-livro" title="Permalink to this headline">¶</a></h2>
+<p>Além desses assuntos, o capítulo 4 <em>&#8220;Text versus bytes&#8221;</em> do <a class="reference external" href="http://shop.oreilly.com/product/0636920032519.do">Fluent Python</a> cobre:</p>
+<ul class="simple">
+<li>manipulação de bytes com <tt class="docutils literal"><span class="pre">array.array</span></tt>, <tt class="docutils literal"><span class="pre">memoryview</span></tt> e <tt class="docutils literal"><span class="pre">struct</span></tt></li>
+<li>codificações com BOM (byte-order mark)</li>
+<li>normalização de texto Unicode para comparação e indexação</li>
+<li>o que faz o método <tt class="docutils literal"><span class="pre">str.casefold()</span></tt></li>
+<li>exemplos de código: normalização e remoção de acentos</li>
+<li>identificação de dígitos não-ASCII</li>
+<li>expressões regulares com <tt class="docutils literal"><span class="pre">str</span></tt> e <tt class="docutils literal"><span class="pre">bytes</span></tt></li>
+<li>funções do módulo <tt class="docutils literal"><span class="pre">os</span></tt> que aceitam <tt class="docutils literal"><span class="pre">str</span></tt> ou <tt class="docutils literal"><span class="pre">bytes</span></tt></li>
+<li><strong>muitas</strong> referências: vídeos, blogs, slides, livros, padrões oficiais...</li>
+</ul>
+<hr class="docutils" />
+<p><a class="reference external" href="README.rst">Voltar</a></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Texto versus bytes</a><ul>
+<li><a class="reference internal" href="#encoding-versus-decoding">Encoding versus decoding</a></li>
+<li><a class="reference internal" href="#tipos-binarios">Tipos binários</a></li>
+<li><a class="reference internal" href="#codecs">Codecs</a></li>
+<li><a class="reference internal" href="#diagnosticar-e-resolver-erros">Diagnosticar e resolver erros</a></li>
+<li><a class="reference internal" href="#detectando-encodings-chardet">Detectando encodings: Chardet</a></li>
+<li><a class="reference internal" href="#arquivos-de-texto">Arquivos de texto</a></li>
+<li><a class="reference internal" href="#a-zona-dos-encodings-default">A <em>zona</em> dos encodings default</a></li>
+<li><a class="reference internal" href="#ordem-alfabetica">Ordem alfabética</a></li>
+<li><a class="reference internal" href="#outros-topicos-abordados-no-livro">Outros tópicos abordados no livro</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="README.html"
+                        title="previous chapter">Python Fluente: melhores momentos (vol.1)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="format.html"
+                        title="next chapter">Customização de <tt class="docutils literal"><span class="pre">format</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/unicode.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="format.html" title="Customização de format"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="README.html" title="Python Fluente: melhores momentos (vol.1)"
+             >previous</a> |</li>
+        <li><a href="index.html">Fluent Python: melhores momentos vol.1 2015.01 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Luciano Ramalho.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

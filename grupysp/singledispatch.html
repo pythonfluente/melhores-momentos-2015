@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Funções genéricas com @singledispatch &mdash; Fluent Python: melhores momentos vol.1 2015.01 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2015.01',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <link rel="top" title="Fluent Python: melhores momentos vol.1 2015.01 documentation" href="index.html" />
+    <link rel="prev" title="Customização de format" href="format.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="format.html" title="Customização de format"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Fluent Python: melhores momentos vol.1 2015.01 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="funcoes-genericas-com-singledispatch">
+<h1>Funções genéricas com <tt class="docutils literal"><span class="pre">&#64;singledispatch</span></tt><a class="headerlink" href="#funcoes-genericas-com-singledispatch" title="Permalink to this headline">¶</a></h1>
+<p>Imagine que estamos criando uma ferramenta para depurar aplicativos Web. Queremos gerar HTML a partir de diferentes tipos de objetos.</p>
+<p>Podemos começar com uma função assim:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">html</span>
+
+<span class="k">def</span> <span class="nf">htmlize</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+    <span class="k">return</span> <span class="s">&#39;&lt;pre&gt;{}&lt;/pre&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Mas queremos gerar HTML customizado para vários tipos de objetos.</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">str</span></tt></dt>
+<dd>Substituir quebras de linha por <tt class="docutils literal"><span class="pre">&lt;br&gt;\n</span></tt> e usar <tt class="docutils literal"><span class="pre">&lt;p&gt;</span></tt> em vez de <tt class="docutils literal"><span class="pre">&lt;pre&gt;</span></tt>.</dd>
+<dt><tt class="docutils literal"><span class="pre">int</span></tt></dt>
+<dd>Mostrar o número em decimal e hexadecimal.</dd>
+<dt><tt class="docutils literal"><span class="pre">list</span></tt></dt>
+<dd>Gerar uma lista HTML, formatando cada item de acordo com seu tipo.</dd>
+</dl>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">htmlize</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">})</span>
+<span class="go">&#39;&lt;pre&gt;{1, 2, 3}&lt;/pre&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">htmlize</span><span class="p">(</span><span class="nb">abs</span><span class="p">)</span>
+<span class="go">&#39;&lt;pre&gt;&amp;lt;built-in function abs&amp;gt;&lt;/pre&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">htmlize</span><span class="p">(</span><span class="s">&#39;Heimlich &amp; Co.</span><span class="se">\n</span><span class="s">- a game&#39;</span><span class="p">)</span>
+<span class="go">&#39;&lt;p&gt;Heimlich &amp;amp; Co.&lt;br&gt;\n- a game&lt;/p&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">htmlize</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="go">&#39;&lt;pre&gt;42 (0x2a)&lt;/pre&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">htmlize</span><span class="p">([</span><span class="s">&#39;alpha&#39;</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">}]))</span>
+<span class="go">&lt;ul&gt;</span>
+<span class="go">&lt;li&gt;&lt;p&gt;alpha&lt;/p&gt;&lt;/li&gt;</span>
+<span class="go">&lt;li&gt;&lt;pre&gt;66 (0x42)&lt;/pre&gt;&lt;/li&gt;</span>
+<span class="go">&lt;li&gt;&lt;pre&gt;{1, 2, 3}&lt;/pre&gt;&lt;/li&gt;</span>
+<span class="go">&lt;/ul&gt;</span>
+</pre></div>
+</div>
+<p>A solução mais flexível do que sobrecarga de métodos é uma função genérica: <a class="reference external" href="generic.py">generic.py</a>.</p>
+<hr class="docutils" />
+<p><a class="reference external" href="README.rst">Voltar</a></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="format.html"
+                        title="previous chapter">Customização de <tt class="docutils literal"><span class="pre">format</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/singledispatch.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="format.html" title="Customização de format"
+             >previous</a> |</li>
+        <li><a href="index.html">Fluent Python: melhores momentos vol.1 2015.01 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Luciano Ramalho.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
